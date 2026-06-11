@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AE Mock Training Evaluation Rubric — Shining 3D Dental</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f7f8fa;
+  --white: #ffffff;
+  --ink: #111827;
+  --ink2: #374151;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+
+  --blue: #1d4ed8;
+  --blue-light: #eff6ff;
+  --blue-mid: #bfdbfe;
+
+  --teal: #0d9488;
+  --teal-light: #f0fdfa;
+  --amber: #b45309;
+  --amber-light: #fffbeb;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --red-border: #fca5a5;
+
+  --score5: #166534; --score5-bg: #dcfce7; --score5-border: #86efac;
+  --score4: #065f46; --score4-bg: #d1fae5; --score4-border: #6ee7b7;
+  --score3: #92400e; --score3-bg: #fef3c7; --score3-border: #fcd34d;
+  --score2: #9a3412; --score2-bg: #ffedd5; --score2-border: #fdba74;
+  --score1: #991b1b; --score1-bg: #fee2e2; --score1-border: #fca5a5;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+/* ── PAGE WRAPPER ── */
+.page { max-width: 1140px; margin: 0 auto; padding: 40px 28px 80px; }
+
+/* ── COVER HEADER ── */
+.cover {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 40px 28px;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+.cover-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.cover h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.cover-sub { font-size: 13px; color: var(--muted); max-width: 560px; }
+.cover-meta { text-align: right; }
+.cover-meta p { font-size: 12px; color: var(--muted); line-height: 2; }
+.cover-meta strong { color: var(--ink2); }
+
+.candidate-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.candidate-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.candidate-field input, .candidate-field select {
+  width: 100%;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+.candidate-field input:focus, .candidate-field select:focus { outline: 2px solid var(--blue); border-color: transparent; }
+
+/* ── PURPOSE BOX ── */
+.purpose-box {
+  background: var(--blue-light);
+  border: 1px solid var(--blue-mid);
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.7;
+}
+.purpose-box strong { display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+
+/* ── SCALE LEGEND ── */
+.scale-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.scale-card {
+  border-radius: 10px;
+  padding: 14px 14px 12px;
+  border: 1px solid;
+  text-align: center;
+}
+.scale-num { font-size: 22px; font-weight: 700; font-family: 'DM Mono', monospace; line-height: 1; margin-bottom: 4px; }
+.scale-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.scale-desc { font-size: 11px; line-height: 1.5; }
+.s5 { background: var(--score5-bg); border-color: var(--score5-border); color: var(--score5); }
+.s4 { background: var(--score4-bg); border-color: var(--score4-border); color: var(--score4); }
+.s3 { background: var(--score3-bg); border-color: var(--score3-border); color: var(--score3); }
+.s2 { background: var(--score2-bg); border-color: var(--score2-border); color: var(--score2); }
+.s1 { background: var(--score1-bg); border-color: var(--score1-border); color: var(--score1); }
+
+/* ── LIVE SCORE ── */
+.live-score-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 28px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.ls-num { font-size: 36px; font-weight: 700; font-family: 'DM Mono', monospace; line-height: 1; color: var(--ink); }
+.ls-num span { font-size: 16px; color: var(--muted); }
+.ls-progress { flex: 1; min-width: 180px; }
+.ls-prog-label { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 5px; }
+.ls-bar-bg { background: var(--border); border-radius: 6px; height: 6px; overflow: hidden; }
+.ls-bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg,#1d4ed8,#0d9488); transition: width .3s; }
+.ls-thresholds { display: flex; gap: 8px; flex-wrap: wrap; }
+.thresh { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 20px; border: 1px solid; white-space: nowrap; }
+
+/* ── SECTION BLOCK ── */
+.eval-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.section-head {
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-icon {
+  width: 38px; height: 38px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.si-blue { background: var(--blue-light); }
+.si-teal { background: var(--teal-light); }
+.si-amber { background: var(--amber-light); }
+.si-purple { background: var(--purple-light); }
+.si-red { background: var(--red-light); }
+.section-title-wrap { flex: 1; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+.section-subtitle { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.section-pts-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 3px 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── CRITERIA TABLE ── */
+.crit-table { width: 100%; border-collapse: collapse; }
+.crit-table thead th {
+  background: var(--bg);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 9px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.crit-table tbody tr { border-bottom: 1px solid var(--border); }
+.crit-table tbody tr:last-child { border-bottom: none; }
+.crit-table tbody tr:hover { background: #fafbfc; }
+.crit-table td { padding: 12px 16px; vertical-align: top; }
+
+.crit-name { font-weight: 600; font-size: 13px; color: var(--ink); margin-bottom: 2px; }
+.crit-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.behavior-cell { font-size: 12px; line-height: 1.55; color: var(--ink2); }
+.behavior-cell .beh-label { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 2px; }
+.beh-ex { color: var(--score5); } .beh-me { color: var(--score3); } .beh-ni { color: var(--red); }
+
+.score-picker { display: flex; gap: 4px; align-items: center; }
+.spk {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border2);
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  transition: all .12s;
+}
+.spk:hover { border-color: var(--blue); color: var(--blue); }
+.spk.active-5 { background: var(--score5-bg); border-color: var(--score5-border); color: var(--score5); }
+.spk.active-4 { background: var(--score4-bg); border-color: var(--score4-border); color: var(--score4); }
+.spk.active-3 { background: var(--score3-bg); border-color: var(--score3-border); color: var(--score3); }
+.spk.active-2 { background: var(--score2-bg); border-color: var(--score2-border); color: var(--score2); }
+.spk.active-1 { background: var(--score1-bg); border-color: var(--score1-border); color: var(--score1); }
+
+.notes-ta {
+  width: 100%;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  resize: none;
+  min-height: 34px;
+  background: var(--bg);
+}
+.notes-ta:focus { outline: 2px solid var(--blue); border-color: transparent; }
+.notes-ta::placeholder { color: var(--border2); }
+
+/* ── CRITICAL FAILURES ── */
+.critical-block {
+  background: var(--red-light);
+  border: 1.5px solid var(--red-border);
+  border-radius: 14px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.critical-head {
+  background: #dc2626;
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.critical-head h2 { font-size: 14px; font-weight: 700; }
+.critical-head p { font-size: 12px; opacity: .85; margin-top: 1px; }
+.critical-list { padding: 20px 24px; }
+.critical-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--red-border);
+}
+.critical-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.cf-check {
+  width: 20px; height: 20px;
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: transparent;
+  transition: all .15s;
+  background: var(--white);
+}
+.cf-check.flagged { background: var(--red); color: #fff; border-color: var(--red); }
+.cf-text { font-size: 13px; color: var(--red); font-weight: 500; }
+.cf-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ── CERTIFICATION SECTION ── */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.cert-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 16px 14px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.cert-card:hover { border-color: var(--blue-mid); }
+.cert-card.selected-cert { border-color: var(--blue); background: var(--blue-light); }
+.cert-card .cert-icon { font-size: 22px; margin-bottom: 8px; }
+.cert-card .cert-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.cert-card .cert-thresh { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--muted); margin-bottom: 6px; }
+.cert-card .cert-desc { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+.cert-card.c-green .cert-icon { color: var(--score5); }
+.cert-card.c-teal .cert-icon { color: var(--teal); }
+.cert-card.c-amber .cert-icon { color: var(--amber); }
+.cert-card.c-red .cert-icon { color: var(--red); }
+
+/* ── OVERALL COMMENTS ── */
+.final-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.final-block h3 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--ink); }
+.final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.final-field label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.final-field textarea {
+  width: 100%;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  resize: vertical;
+  min-height: 100px;
+}
+.final-field textarea:focus { outline: 2px solid var(--blue); border-color: transparent; }
+
+/* ── RESULT BANNER ── */
+.result-banner {
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.result-banner.show { display: flex; }
+.rb-pass { background: var(--score5-bg); border: 1.5px solid var(--score5-border); color: var(--score5); }
+.rb-coaching { background: var(--score4-bg); border: 1.5px solid var(--score4-border); color: var(--score4); }
+.rb-shadow { background: var(--score3-bg); border: 1.5px solid var(--score3-border); color: var(--score3); }
+.rb-retrain { background: var(--score1-bg); border: 1.5px solid var(--score1-border); color: var(--red); }
+
+/* ── ACTION BAR ── */
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.btn {
+  padding: 9px 22px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity .15s;
+}
+.btn:hover { opacity: .85; }
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-ghost { background: var(--bg); color: var(--muted); border: 1px solid var(--border2); }
+
+/* colgroup widths */
+col.c-crit { width: 28%; }
+col.c-beh  { width: 36%; }
+col.c-score { width: 13%; }
+col.c-notes { width: 23%; }
+
+/* PRINT */
+@media print {
+  body { background: #fff; }
+  .action-bar, .live-score-bar .ls-thresholds { display: none; }
+  .eval-section, .critical-block, .final-block { break-inside: avoid; }
+}
+@media (max-width: 760px) {
+  .cover { grid-template-columns: 1fr; }
+  .candidate-grid { grid-template-columns: 1fr 1fr; }
+  .scale-grid { grid-template-columns: 1fr 1fr; }
+  .cert-grid { grid-template-columns: 1fr 1fr; }
+  .final-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD OVERLAY -->
+<div id="pw-overlay" style="position:fixed;inset:0;z-index:9999;background:#0f1117;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',system-ui,sans-serif;">
+  <div style="background:#181c27;border:1px solid #2a3045;border-radius:16px;padding:40px 44px 36px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5);">
+    <div style="font-size:32px;margin-bottom:12px;">🔒</div>
+    <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#3b7fff;margin-bottom:6px;">Shining 3D Dental · Applications Engineering</div>
+    <h2 style="font-size:20px;font-weight:700;color:#e8ecf4;margin-bottom:4px;">AE Training Rubric</h2>
+    <p style="font-size:13px;color:#7c8aaa;margin-bottom:28px;">Enter the access password to continue.</p>
+    <input id="pw-input" type="password" placeholder="Password"
+      onkeydown="if(event.key==='Enter')checkPW()"
+      style="width:100%;background:#0f1117;border:1px solid #2a3045;border-radius:8px;padding:11px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:#e8ecf4;margin-bottom:10px;outline:none;"
+      onfocus="this.style.borderColor='#3b7fff'" onblur="this.style.borderColor='#2a3045'">
+    <div id="pw-error" style="font-size:12px;color:#f24c4c;min-height:18px;margin-bottom:10px;"></div>
+    <button onclick="checkPW()" style="width:100%;background:#1d4ed8;color:#fff;border:none;border-radius:8px;padding:11px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">Unlock</button>
+  </div>
+</div>
+
+<div id="pw-content" style="display:none;">
+<div class="page">
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div>
+    <div class="cover-eyebrow">Shining 3D Dental · Applications Engineering</div>
+    <h1>Mock Training Evaluation Rubric</h1>
+    <p class="cover-sub">Formal assessment of an AE's ability to independently train customers on the Elite IOS, HACS workflow, Ortho/Restoration/Implant workflows, and printer software. This rubric evaluates training <em>capability</em> — not task completion.</p>
+    <div class="candidate-grid">
+      <div class="candidate-field">
+        <label>Trainee Name</label>
+        <input type="text" placeholder="Full name">
+      </div>
+      <div class="candidate-field">
+        <label>Evaluator</label>
+        <input type="text" placeholder="Supervisor / Senior AE">
+      </div>
+      <div class="candidate-field">
+        <label>Date</label>
+        <input type="date">
+      </div>
+      <div class="candidate-field">
+        <label>Assessment Round</label>
+        <select>
+          <option>Round 1 — Initial</option>
+          <option>Round 2 — Re-assessment</option>
+          <option>Round 3 — Final</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <p>Version <strong>2.0</strong></p>
+    <p>June 2026</p>
+    <p>Elite · HACS · Restoration<br>Implant · Ortho · Printer</p>
+  </div>
+</div>
+
+<!-- ── PURPOSE ── -->
+<div class="purpose-box">
+  <strong>Purpose of this Assessment</strong>
+  This evaluation is NOT simply checking whether the AE can complete a workflow. It measures whether the AE possesses the product knowledge depth, workflow rationale, troubleshooting ability, customer communication skills, and instructional capability required to <strong>independently train customers</strong>. The AE should demonstrate they can teach — not just perform.
+</div>
+
+<!-- ── SCALE ── -->
+<div class="scale-grid">
+  <div class="scale-card s5">
+    <div class="scale-num">5</div>
+    <div class="scale-label">Expert</div>
+    <div class="scale-desc">Customer-ready trainer. Teaches with depth, handles any question, adapts to all levels.</div>
+  </div>
+  <div class="scale-card s4">
+    <div class="scale-num">4</div>
+    <div class="scale-label">Proficient</div>
+    <div class="scale-desc">Solid knowledge. Minor gaps or hesitations but recovers well. Close to independent.</div>
+  </div>
+  <div class="scale-card s3">
+    <div class="scale-num">3</div>
+    <div class="scale-label">Developing</div>
+    <div class="scale-desc">Understands basics but needs coaching on depth, rationale, or edge cases.</div>
+  </div>
+  <div class="scale-card s2">
+    <div class="scale-num">2</div>
+    <div class="scale-label">Gaps</div>
+    <div class="scale-desc">Significant knowledge gaps. Would mislead or confuse customers without supervision.</div>
+  </div>
+  <div class="scale-card s1">
+    <div class="scale-num">1</div>
+    <div class="scale-label">Unsatisfactory</div>
+    <div class="scale-desc">Incorrect, unsafe, or unable to perform. Not ready for any customer interaction.</div>
+  </div>
+</div>
+
+<!-- ── LIVE SCORE ── -->
+<div class="live-score-bar">
+  <div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Live Score</div>
+    <div class="ls-num" id="live-score">0 <span>/ 0</span></div>
+  </div>
+  <div class="ls-progress">
+    <div class="ls-prog-label"><span>Score %</span><span id="pct-txt">—</span></div>
+    <div class="ls-bar-bg"><div class="ls-bar-fill" id="ls-bar" style="width:0%"></div></div>
+  </div>
+  <div class="ls-thresholds">
+    <span class="thresh" style="border-color:var(--score5-border);color:var(--score5);background:var(--score5-bg)">≥ 85% · Independent</span>
+    <span class="thresh" style="border-color:var(--score4-border);color:var(--score4);background:var(--score4-bg)">75–84% · Coaching</span>
+    <span class="thresh" style="border-color:var(--score3-border);color:var(--score3);background:var(--score3-bg)">60–74% · Shadow</span>
+    <span class="thresh" style="border-color:var(--score1-border);color:var(--red);background:var(--score1-bg)">&lt; 60% · Retrain</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1 · IOS SETUP & DEVICE KNOWLEDGE
+═══════════════════════════════════════════════ -->
+<div class="eval-section">
+  <div class="section-head">
+    <div class="section-icon si-blue">🔬</div>
+    <div class="section-title-wrap">
+      <div class="section-title">Section 1 · Elite IOS — Setup, Hardware & Device Knowledge</div>
+      <div class="section-subtitle">Account creation, calibration, system requirements, device care, settings, endoscope mode</div>
+    </div>
+    <div class="section-pts-badge" id="s1-badge">0 / 30 pts</div>
+  </div>
+  <table class="crit-table">
+    <colgroup><col class="c-crit"><col class="c-beh"><col class="c-score"><col class="c-notes"></colgroup>
+    <thead>
+      <tr>
+        <th>Criterion</th>
+        <th>Observable Behaviors</th>
+        <th>Score (1–5)</th>
+        <th>Evaluator Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="crit-name">Shining 3D Account Creation</div>
+          <div class="crit-desc">Can walk customer through account setup, device registration, and license activation step by step.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Teaches each step with rationale; anticipates common errors (wrong region, incorrect serial format) and preemptively addresses them.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Completes setup correctly with only minor prompting needed.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Skips steps, cannot explain why each step matters, or requires significant assistance.
+        </td>
+        <td><div class="score-picker" data-sec="1" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Calibration Procedure</div>
+          <div class="crit-desc">Executes full calibration in correct order including tip warm-up; explains the WHY behind each step.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains thermal drift, calibration frequency, and impact on scan accuracy; corrects a wrong customer assumption in real time.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Performs steps correctly; gives basic explanation of purpose.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Skips warm-up, performs steps out of order, or cannot explain why calibration matters.
+        </td>
+        <td><div class="score-picker" data-sec="1" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">System & PC Requirements</div>
+          <div class="crit-desc">States minimum specs, OS compatibility, USB requirements, and explains impact of sub-optimal hardware.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains why each spec matters (USB 3.0 for data throughput, RAM for real-time stitching); proactively flags common customer hardware pitfalls.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Recites specs correctly; gives a surface-level explanation.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Cannot recall specs or cannot explain why they matter.
+        </td>
+        <td><div class="score-picker" data-sec="1" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Device Care & Maintenance</div>
+          <div class="crit-desc">Explains cleaning protocol, tip handling, storage, and disinfection practices. Knows what voids warranty.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Links each care practice to device longevity or accuracy; covers autoclave restrictions, approved disinfectants, and tip disposal.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Covers main cleaning and storage points correctly.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Gives unsafe or incorrect recommendations (e.g., incorrect disinfectants).
+        </td>
+        <td><div class="score-picker" data-sec="1" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">General Software Settings</div>
+          <div class="crit-desc">Navigates all key settings; can explain what each setting controls and when/why to adjust it.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains each setting in clinical terms a dentist would understand; demonstrates consequences of incorrect settings with a live example.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Navigates settings and provides basic correct explanations.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Cannot locate key settings or cannot explain their purpose.
+        </td>
+        <td><div class="score-picker" data-sec="1" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Endoscope Mode</div>
+          <div class="crit-desc">Activates and explains endoscope mode, its clinical indications, and limitations compared to standard scanning.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Compares endoscope vs. standard mode in accuracy and use-case terms; teaches the customer when NOT to use it.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Activates mode correctly; explains primary use case.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Unaware of the feature or cannot explain clinical relevance.
+        </td>
+        <td><div class="score-picker" data-sec="1" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2 · HACS WORKFLOW
+═══════════════════════════════════════════════ -->
+<div class="eval-section">
+  <div class="section-head">
+    <div class="section-icon si-teal">🦷</div>
+    <div class="section-title-wrap">
+      <div class="section-title">Section 2 · HACS Workflow</div>
+      <div class="section-subtitle">Immediate loading vs. healed case, live mock scenario, Capscan, tissue scanning, maintenance</div>
+    </div>
+    <div class="section-pts-badge" id="s2-badge">0 / 20 pts</div>
+  </div>
+  <table class="crit-table">
+    <colgroup><col class="c-crit"><col class="c-beh"><col class="c-score"><col class="c-notes"></colgroup>
+    <thead>
+      <tr><th>Criterion</th><th>Observable Behaviors</th><th>Score (1–5)</th><th>Evaluator Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="crit-name">Case Creation: Immediate Loading vs. Healed</div>
+          <div class="crit-desc">Correctly differentiates case setup for immediate loading vs. healed implant and explains clinical implications of selecting the wrong type.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Uses clinical language to explain tissue state differences; teaches the doctor how this selection affects the final prosthetic outcome.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Selects correctly and gives a basic correct explanation of the difference.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Confuses the two types or cannot articulate clinical consequence.
+        </td>
+        <td><div class="score-picker" data-sec="2" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Live Mock Scenario (HACS Start-to-Finish)</div>
+          <div class="crit-desc">Conducts a simulated HACS case from case creation through scan acquisition, quality check, and export — teaching every step as if to a customer.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Narrates the WHY at every step, catches and corrects issues in real time, adapts explanation when evaluator asks a curveball question.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Completes the scenario correctly with minor hesitations; explanations mostly complete.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Silent clicking, skips steps, or cannot answer follow-up questions.
+        </td>
+        <td><div class="score-picker" data-sec="2" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Tissue Scanning & Bleeding Management</div>
+          <div class="crit-desc">Explains scanning through or around soft tissue; knows best practices for managing bleeding and moisture during HACS scans.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Provides specific clinical guidance (retraction cord, hemostatic agents, isolation techniques) and explains how each impacts scan quality.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Explains main tissue scanning challenges and basic mitigation steps.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Unaware of tissue challenges or provides vague non-answers.
+        </td>
+        <td><div class="score-picker" data-sec="2" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Capscan Workflow (HACS + Caps Path)</div>
+          <div class="crit-desc">Demonstrates proper Capscan path within the HACS workflow; explains its purpose and correct usage sequence.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains when to use Capscan vs. standard HACS path; teaches the clinical outcome difference and common mistakes.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Navigates correctly; gives basic explanation of purpose.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Cannot navigate the Capscan path or confuses it with the standard workflow.
+        </td>
+        <td><div class="score-picker" data-sec="2" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3 · ORTHO / RESTORATION / IMPLANT / REMOVABLES
+═══════════════════════════════════════════════ -->
+<div class="eval-section">
+  <div class="section-head">
+    <div class="section-icon si-amber">👑</div>
+    <div class="section-title-wrap">
+      <div class="section-title">Section 3 · Ortho / Restoration / Implant / Removables Workflows</div>
+      <div class="section-subtitle">Case creation, prep selection, arch scanning, scan sidebar, occlusion, AccuModules, pre-design tools</div>
+    </div>
+    <div class="section-pts-badge" id="s3-badge">0 / 30 pts</div>
+  </div>
+  <table class="crit-table">
+    <colgroup><col class="c-crit"><col class="c-beh"><col class="c-score"><col class="c-notes"></colgroup>
+    <thead>
+      <tr><th>Criterion</th><th>Observable Behaviors</th><th>Score (1–5)</th><th>Evaluator Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="crit-name">Case Creation & Workflow Selection Rationale</div>
+          <div class="crit-desc">Selects the correct case type (crown, bridge, inlay, implant, removable) and explains WHY each workflow is appropriate for the given clinical scenario.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Walks through decision logic aloud; explains contraindications for each workflow and how selecting the wrong type affects downstream lab or design output.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Selects correctly and provides basic rationale.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Selects by trial and error or cannot explain selection criteria.
+        </td>
+        <td><div class="score-picker" data-sec="3" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Selecting a Prep & Margin Capture</div>
+          <div class="crit-desc">Captures clean margin with correct angulation; explains tissue isolation importance, retraction, and scanning strategy for sub-gingival margins.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Links proper prep selection and angulation to downstream fit accuracy; coaches the doctor on chairside isolation technique during training.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Demonstrates correct technique; explains isolation at a basic level.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Incorrect angulation guidance or cannot explain why isolation matters.
+        </td>
+        <td><div class="score-picker" data-sec="3" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Case Creation Diagram: Pontic / Bridge</div>
+          <div class="crit-desc">Correctly defines pontic and bridge in the diagram tool; explains clinical significance of each tooth assignment.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains pontic, abutment, and connector in clinical terms; demonstrates the downstream impact on CAD design and fit.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Diagrams correctly; uses correct terminology with basic explanation.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Incorrect diagram assignment or cannot differentiate pontic from abutment.
+        </td>
+        <td><div class="score-picker" data-sec="3" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Upper & Lower Arch Scan Technique + Scan Sidebar</div>
+          <div class="crit-desc">Demonstrates correct scan path; explains every item in the scan sidebar and what each indicator means clinically.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Teaches scan path strategy with reasoning (proximal coverage, gingival detail); explains each sidebar indicator and what action a customer should take based on it.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Correct technique; explains main sidebar items.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Incorrect scan path; cannot explain sidebar indicators.
+        </td>
+        <td><div class="score-picker" data-sec="3" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Occlusion Map & Occlusion Check</div>
+          <div class="crit-desc">Explains the purpose and clinical relevance of the occlusion map; interprets the results and explains what action follows.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Teaches the color scale meaning in clinical terms; explains how an incorrect bite scan affects the occlusion map and subsequent restoration fit.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Explains main purpose and can interpret a basic occlusion result.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Cannot interpret the map or cannot explain its clinical purpose.
+        </td>
+        <td><div class="score-picker" data-sec="3" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">AccuModules & Pre-Design Tools</div>
+          <div class="crit-desc">Demonstrates knowledge of AccuModules; explains what each pre-design tool does and when to use it before sending to the lab or CAD software.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains each AccuModule's function and its clinical impact; teaches the customer which pre-design tools improve lab turnaround and accuracy.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Navigates AccuModules and pre-design tools correctly; basic explanation.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Unaware of key AccuModules or cannot explain their purpose.
+        </td>
+        <td><div class="score-picker" data-sec="3" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4 · PRINTER WORKFLOWS
+═══════════════════════════════════════════════ -->
+<div class="eval-section">
+  <div class="section-head">
+    <div class="section-icon si-purple">🖨️</div>
+    <div class="section-title-wrap">
+      <div class="section-title">Section 4 · Printer Workflows & Software</div>
+      <div class="section-subtitle">Software navigation, resin profiles, support strategy, file transfer, maintenance</div>
+    </div>
+    <div class="section-pts-badge" id="s4-badge">0 / 25 pts</div>
+  </div>
+  <table class="crit-table">
+    <colgroup><col class="c-crit"><col class="c-beh"><col class="c-score"><col class="c-notes"></colgroup>
+    <thead>
+      <tr><th>Criterion</th><th>Observable Behaviors</th><th>Score (1–5)</th><th>Evaluator Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="crit-name">Printer Software Navigation</div>
+          <div class="crit-desc">Locates and explains all key functions: file import, print settings, support editor, print queue. Teaches without hesitation.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Narrates purpose of each panel; anticipates where new users get lost and proactively addresses those areas.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Navigates correctly with minor hesitation; explains main functions.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Requires help locating key functions or cannot explain their purpose.
+        </td>
+        <td><div class="score-picker" data-sec="4" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Resin Profile Selection</div>
+          <div class="crit-desc">Selects correct resin profile for each print type (model, surgical guide, splint, denture base, etc.) and explains why profile accuracy affects print quality and fit.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains exposure time, layer parameters, and how an incorrect profile causes print failures or dimensional errors; recommends profile validation process.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Selects correct profile; gives basic explanation of its importance.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Selects incorrect profile or cannot differentiate between resin types.
+        </td>
+        <td><div class="score-picker" data-sec="4" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Support Structure Placement</div>
+          <div class="crit-desc">Adds supports appropriately and avoids placing them on critical scan surfaces or functional anatomy.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Explains the biomechanical reason for support placement; teaches the customer to identify critical no-support zones and validates placement before printing.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Places supports correctly; avoids critical surfaces with basic explanation.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Places supports on occlusal or margin surfaces; cannot explain impact.
+        </td>
+        <td><div class="score-picker" data-sec="4" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">File Transfer Methods</div>
+          <div class="crit-desc">Explains and demonstrates all available methods to send files to the printer (USB, Wi-Fi, direct connection) and knows the pros/cons of each.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Recommends the best method for each clinic environment type; troubleshoots a failed transfer scenario in real time.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Demonstrates at least two methods correctly; basic explanation.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Knows only one method or cannot troubleshoot a basic transfer failure.
+        </td>
+        <td><div class="score-picker" data-sec="4" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Printer Maintenance & Best Practices</div>
+          <div class="crit-desc">Explains FEP/nFEP inspection and replacement, build plate leveling, resin handling/storage/disposal, post-processing (wash + cure), and PPE requirements.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Teaches a complete maintenance cadence; links each step to print quality outcomes; covers resin safety and waste disposal regulations.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Covers main maintenance steps correctly; provides basic safety guidance.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Skips critical steps (e.g., PPE) or gives incorrect maintenance guidance.
+        </td>
+        <td><div class="score-picker" data-sec="4" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 5 · CROSS-CUTTING COMPETENCIES
+═══════════════════════════════════════════════ -->
+<div class="eval-section">
+  <div class="section-head">
+    <div class="section-icon si-blue">🎯</div>
+    <div class="section-title-wrap">
+      <div class="section-title">Section 5 · Cross-Cutting Trainer Competencies</div>
+      <div class="section-subtitle">Communication, adaptability, critical thinking, troubleshooting, professionalism</div>
+    </div>
+    <div class="section-pts-badge" id="s5-badge">0 / 25 pts</div>
+  </div>
+  <table class="crit-table">
+    <colgroup><col class="c-crit"><col class="c-beh"><col class="c-score"><col class="c-notes"></colgroup>
+    <thead>
+      <tr><th>Criterion</th><th>Observable Behaviors</th><th>Score (1–5)</th><th>Evaluator Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="crit-name">Teaches vs. Clicks</div>
+          <div class="crit-desc">Explains the purpose, rationale, and outcome of each step — not just executes it silently.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Every action is accompanied by a clear "because…" statement; pauses to ensure customer understanding before proceeding.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Narrates most steps; occasional silence on routine actions.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Predominantly clicks without explaining; customer would not learn from observing.
+        </td>
+        <td><div class="score-picker" data-sec="5" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Adapts to Beginner & Advanced Users</div>
+          <div class="crit-desc">Adjusts depth, terminology, and pace based on the customer's level when prompted by the evaluator.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Seamlessly shifts language and depth mid-session when evaluator changes the "customer profile"; uses analogies for beginners and technical detail for advanced users.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Adjusts with prompting; noticeable but acceptable shift in approach.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>One-speed training regardless of customer level; jargon-heavy with beginners.
+        </td>
+        <td><div class="score-picker" data-sec="5" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Handles Difficult / Unexpected Questions</div>
+          <div class="crit-desc">Responds confidently and accurately to curveball or advanced follow-up questions from the evaluator.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Answers accurately or says "let me verify that and follow up" — never guesses or bluffs; uses the question as a teaching moment.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Answers correctly on most questions; minor uncertainty on edge cases.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Guesses incorrectly; becomes flustered or avoids the question.
+        </td>
+        <td><div class="score-picker" data-sec="5" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Troubleshooting Under Pressure</div>
+          <div class="crit-desc">Diagnoses and resolves a simulated issue (scan failure, print error, software bug) in front of the "customer" without losing composure.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Narrates troubleshooting logic; reassures the customer; reaches correct resolution or appropriate escalation path.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Resolves the issue correctly with some hesitation; maintains composure.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Becomes flustered, provides incorrect fix, or escalates prematurely without attempting resolution.
+        </td>
+        <td><div class="score-picker" data-sec="5" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="crit-name">Professionalism & Confidence</div>
+          <div class="crit-desc">Presents with composure, appropriate dental vocabulary, organized delivery, and a customer-first tone.</div>
+        </td>
+        <td class="behavior-cell">
+          <div class="beh-label beh-ex">▲ Excellent</div>Projects confident authority without arrogance; organized structure; patient with questions; represents Shining 3D brand appropriately.
+          <div class="beh-label beh-me" style="margin-top:6px">● Meets Expectations</div>Professional; minor filler words or pacing issues but overall positive impression.
+          <div class="beh-label beh-ni" style="margin-top:6px">▼ Needs Improvement</div>Disorganized, dismissive of questions, or lacks confidence to the point of undermining trust.
+        </td>
+        <td><div class="score-picker" data-sec="5" data-max="5"><button class="spk" onclick="sp(this,5)">5</button><button class="spk" onclick="sp(this,4)">4</button><button class="spk" onclick="sp(this,3)">3</button><button class="spk" onclick="sp(this,2)">2</button><button class="spk" onclick="sp(this,1)">1</button></div></td>
+        <td><textarea class="notes-ta" placeholder="Notes…" rows="2"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     CRITICAL FAILURE FLAGS
+═══════════════════════════════════════════════ -->
+<div class="critical-block">
+  <div class="critical-head">
+    <div>
+      <h2>⚠️ Critical Failure Areas — Automatic Certification Hold</h2>
+      <p>Any item checked below prevents certification regardless of overall score. Check all that were observed during the assessment.</p>
+    </div>
+  </div>
+  <div class="critical-list" id="cf-list">
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf0">✕</div>
+      <div><div class="cf-text">Provided incorrect clinical guidance to the "customer"</div><div class="cf-sub">E.g., wrong indications, contraindications, or tissue management advice that could cause patient harm.</div></div>
+    </div>
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf1">✕</div>
+      <div><div class="cf-text">Unable to explain workflow rationale for any covered section</div><div class="cf-sub">Could only perform steps; could not explain the WHY when directly asked.</div></div>
+    </div>
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf2">✕</div>
+      <div><div class="cf-text">Repeated navigation errors across multiple sections</div><div class="cf-sub">Three or more instances of being unable to locate core software functions without assistance.</div></div>
+    </div>
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf3">✕</div>
+      <div><div class="cf-text">Unable to answer basic customer questions in any section</div><div class="cf-sub">Guessed incorrectly or bluffed on fundamental product questions.</div></div>
+    </div>
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf4">✕</div>
+      <div><div class="cf-text">Provided incorrect or unsafe troubleshooting recommendation</div><div class="cf-sub">Advice that could damage hardware, corrupt data, or delay patient care.</div></div>
+    </div>
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf5">✕</div>
+      <div><div class="cf-text">Unsafe device handling — scanner or printer</div><div class="cf-sub">Dropped device, recommended incorrect disinfectants, skipped resin PPE, or handled components unsafely.</div></div>
+    </div>
+    <div class="critical-item">
+      <div class="cf-check" onclick="toggleCF(this)" id="cf6">✕</div>
+      <div><div class="cf-text">Complete inability to recover from an unexpected question or error</div><div class="cf-sub">Shut down, became defensive, or misled the customer rather than acknowledging the gap professionally.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESULT BANNER ── -->
+<div class="result-banner" id="result-banner"></div>
+
+<!-- ═══════════════════════════════════════════════
+     CERTIFICATION RECOMMENDATION
+═══════════════════════════════════════════════ -->
+<div class="final-block">
+  <h3>Certification Recommendation</h3>
+  <div class="cert-grid">
+    <div class="cert-card c-green" id="cert-0" onclick="selectCert(0)">
+      <div class="cert-icon">✅</div>
+      <div class="cert-name">Certified to Train Independently</div>
+      <div class="cert-thresh">≥ 85% · No critical flags</div>
+      <div class="cert-desc">AE demonstrates expert-level knowledge across all sections. Customer-ready trainer.</div>
+    </div>
+    <div class="cert-card c-teal" id="cert-1" onclick="selectCert(1)">
+      <div class="cert-icon">🟦</div>
+      <div class="cert-name">Certified with Coaching</div>
+      <div class="cert-thresh">75–84% · No critical flags</div>
+      <div class="cert-desc">Proficient overall with minor gaps. Cleared for training with a Senior AE available for backup.</div>
+    </div>
+    <div class="cert-card c-amber" id="cert-2" onclick="selectCert(2)">
+      <div class="cert-icon">🟡</div>
+      <div class="cert-name">Additional Shadowing Required</div>
+      <div class="cert-thresh">60–74% · No critical flags</div>
+      <div class="cert-desc">Developing competency. Must shadow 2–3 more customer trainings before re-assessment.</div>
+    </div>
+    <div class="cert-card c-red" id="cert-3" onclick="selectCert(3)">
+      <div class="cert-icon">🔁</div>
+      <div class="cert-name">Retraining Required</div>
+      <div class="cert-thresh">&lt; 60% or any critical flag</div>
+      <div class="cert-desc">Significant gaps or critical failure observed. Full retrain on flagged sections before re-assessment.</div>
+    </div>
+  </div>
+
+  <div class="final-grid">
+    <div class="final-field">
+      <label>Strengths Observed</label>
+      <textarea placeholder="Areas where the AE demonstrated strong knowledge or excellent training technique…"></textarea>
+    </div>
+    <div class="final-field">
+      <label>Gaps & Required Actions</label>
+      <textarea placeholder="Specific sections to retrain, topics to review, recommended timeline for re-assessment…"></textarea>
+    </div>
+    <div class="final-field">
+      <label>Critical Failure Notes (if applicable)</label>
+      <textarea placeholder="Detail any critical failure flags checked above and required corrective actions…"></textarea>
+    </div>
+    <div class="final-field">
+      <label>Evaluator Signature & Date</label>
+      <textarea placeholder="Evaluator name, title, and date of assessment…"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ── ACTION BAR ── -->
+<div class="action-bar">
+  <button class="btn btn-ghost" onclick="resetAll()">↺ Reset All Scores</button>
+  <button class="btn btn-primary" onclick="saveHTML()">🖨 Save / Export PDF</button>
+</div>
+
+<script>
+  // ── Score state ──
+  const scores = new Map();
+  const sectionCfg = [
+    { sec: '1', max: 30, badge: 's1-badge' },
+    { sec: '2', max: 20, badge: 's2-badge' },
+    { sec: '3', max: 30, badge: 's3-badge' },
+    { sec: '4', max: 25, badge: 's4-badge' },
+    { sec: '5', max: 25, badge: 's5-badge' },
+  ];
+  const grandMax = 130;
+
+  function sp(btn, val) {
+    const picker = btn.closest('.score-picker');
+    picker.querySelectorAll('.spk').forEach(b => b.className = 'spk');
+    btn.classList.add('active-' + val);
+    scores.set(picker, val);
+    recalc();
+  }
+
+  function recalc() {
+    let total = 0, answered = 0;
+    const allPickers = document.querySelectorAll('.score-picker');
+
+    sectionCfg.forEach(cfg => {
+      let pts = 0;
+      document.querySelectorAll(`.score-picker[data-sec="${cfg.sec}"]`).forEach(p => {
+        if (scores.has(p)) pts += scores.get(p);
+      });
+      document.getElementById(cfg.badge).textContent = pts + ' / ' + cfg.max + ' pts';
+    });
+
+    allPickers.forEach(p => {
+      if (scores.has(p)) { total += scores.get(p); answered++; }
+    });
+
+    document.getElementById('live-score').innerHTML = total + ' <span>/ ' + grandMax + '</span>';
+
+    if (answered === 0) {
+      document.getElementById('pct-txt').textContent = '—';
+      document.getElementById('ls-bar').style.width = '0%';
+      document.getElementById('result-banner').classList.remove('show','rb-pass','rb-coaching','rb-shadow','rb-retrain');
+      return;
+    }
+
+    const pct = Math.round((total / grandMax) * 100);
+    document.getElementById('pct-txt').textContent = pct + '%';
+    document.getElementById('ls-bar').style.width = pct + '%';
+
+    if (answered < allPickers.length) return;
+
+    const hasCritical = document.querySelectorAll('.cf-check.flagged').length > 0;
+    const banner = document.getElementById('result-banner');
+    banner.classList.remove('show','rb-pass','rb-coaching','rb-shadow','rb-retrain');
+
+    if (hasCritical || pct < 60) {
+      banner.classList.add('show','rb-retrain');
+      banner.innerHTML = '🔁 &nbsp;<strong>RETRAINING REQUIRED</strong> — ' + pct + '%' + (hasCritical ? ' · Critical failure flag(s) observed.' : ' · Score below threshold.');
+    } else if (pct < 75) {
+      banner.classList.add('show','rb-shadow');
+      banner.innerHTML = '🟡 &nbsp;<strong>ADDITIONAL SHADOWING REQUIRED</strong> — ' + pct + '% · Developing competency. Schedule 2–3 observed trainings before re-assessment.';
+    } else if (pct < 85) {
+      banner.classList.add('show','rb-coaching');
+      banner.innerHTML = '🟦 &nbsp;<strong>CERTIFIED WITH COACHING</strong> — ' + pct + '% · Cleared for training with Senior AE backup available.';
+    } else {
+      banner.classList.add('show','rb-pass');
+      banner.innerHTML = '✅ &nbsp;<strong>CERTIFIED TO TRAIN INDEPENDENTLY</strong> — ' + pct + '% · Customer-ready trainer. No significant gaps observed.';
+    }
+  }
+
+  // ── Critical failure toggles ──
+  function toggleCF(el) {
+    el.classList.toggle('flagged');
+    recalc();
+  }
+
+  // ── Cert card selection ──
+  function selectCert(i) {
+    document.querySelectorAll('.cert-card').forEach((c,idx) => {
+      c.classList.toggle('selected-cert', idx === i);
+    });
+  }
+
+  // ── Save / Export ──
+  function saveHTML() {
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'AE_Mock_Training_Rubric.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ── Reset ──
+  function resetAll() {
+    scores.clear();
+    document.querySelectorAll('.spk').forEach(b => b.className = 'spk');
+    document.querySelectorAll('.notes-ta').forEach(t => t.value = '');
+    document.querySelectorAll('.cf-check').forEach(c => c.classList.remove('flagged'));
+    document.querySelectorAll('.cert-card').forEach(c => c.classList.remove('selected-cert'));
+    recalc();
+    sectionCfg.forEach(cfg => {
+      document.getElementById(cfg.badge).textContent = '0 / ' + cfg.max + ' pts';
+    });
+    document.getElementById('live-score').innerHTML = '0 <span>/ 0</span>';
+    document.getElementById('pct-txt').textContent = '—';
+    document.getElementById('result-banner').classList.remove('show');
+  }
+</script>
+
+<script>
+  // ── Password check ──
+  // Change the value below to set your password
+  const RUBRIC_PASSWORD = 'Shining3D2026';
+
+  function checkPW() {
+    const val = document.getElementById('pw-input').value;
+    if (val === RUBRIC_PASSWORD) {
+      document.getElementById('pw-overlay').style.display = 'none';
+      document.getElementById('pw-content').style.display = 'block';
+    } else {
+      const err = document.getElementById('pw-error');
+      err.textContent = 'Incorrect password. Please try again.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+      setTimeout(() => { err.textContent = ''; }, 3000);
+    }
+  }
+</script>
+</div><!-- /pw-content -->
+</body>
+</html>
